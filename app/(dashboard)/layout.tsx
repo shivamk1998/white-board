@@ -5,6 +5,7 @@ import { Navbar } from "./_components/navbar";
 import { useConvexAuth } from "convex/react";
 import { SignInButton } from "@clerk/clerk-react";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "@/components/ui/sonner";
 
 
 
@@ -26,6 +27,7 @@ const DashboardLayout = ({
            <OrgSidebar />
            <div className="h-full flex-1">
              <Navbar />
+             <Toaster className="h-7"/>
              {children}
            </div>
          </div>

@@ -1,52 +1,50 @@
-"use client"
+"use client";
 
 import { EmptyBoard } from "./empty-board";
 import { EmptyFav } from "./empty-favorites";
 import { EmptySearch } from "./empty-search";
-
-
-interface BoardListProps{
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+interface BoardListProps {
   orgId: string;
-  query:{
-    search?:string;
-    favorites?:string;
+  query: {
+    search?: string;
+    favorites?: string;
   };
 }
 
-
-export const BoardList = ({orgId,query}: BoardListProps) =>{
+export const BoardList = ({ orgId, query }: BoardListProps) => {
+  const data = useQuery(api.boards.get, { orgId });
   
-  const data=[] //TODO: API call
-
-  if(!data?.length&& query.search){
-return(
-  <div>
-   <EmptySearch/>
-  </div>
-)
+  if(data===undefined){
+    return (
+    <div>
+      Loading...
+    </div>)
   }
-
-  if(!data?.length&& query.favorites){
-    return(
+  if (!data?.length && query.search) {
+    return (
       <div>
-       <EmptyFav/>
+        <EmptySearch />
       </div>
-    )
+    );
   }
 
-  
-  if(!data?.length){
-    return(
+  if (!data?.length && query.favorites) {
+    return (
       <div>
-       <EmptyBoard/>
+        <EmptyFav />
       </div>
-    )
+    );
   }
 
-return (
-  <div>
-    {JSON.stringify(query)}
-  </div>
-)
-}
+  if (!data?.length) {
+    return (
+      <div>
+        <EmptyBoard />
+      </div>
+    );
+  }
 
+  return <div>{JSON.stringify(data)}</div>;
+};
